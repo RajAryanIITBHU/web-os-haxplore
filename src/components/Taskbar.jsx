@@ -1,31 +1,99 @@
-import { AppWindow, File, LayoutDashboard } from 'lucide-react'
-import React from 'react'
+"use client";
+import { useWindowSheetContext } from "@/context/WindowSheetProvider";
+import gsap from "gsap";
+import { AppWindow, File, LayoutDashboard, Search } from "lucide-react";
+import React, { useEffect, useRef, useState } from "react";
 import { PiWindowsLogoFill } from "react-icons/pi";
-const Taskbar = () => {
-  return (
-    <div className="flex w-full h-12 justify-between items-center bg-neutral-800/30 backdrop-blur gap-4 px-4">
-      <div className="min-w-16"></div>
-      <div className="min-w-16 flex gap-1 items-center">
-        <div className="aspect-square h-[44px] rounded hover:bg-neutral-50/10 flex justify-center items-center ">
-          <PiWindowsLogoFill className="w-8 h-8 text-blue-400" />
-        </div>
-        <div className="w-52 h-8 rounded-full bg-neutral-50/20 "></div>
-        <div className="aspect-square h-[44px] rounded hover:bg-neutral-50/10 flex flex-col justify-between py-1 items-center">
-          <File />
-          <span className="flex h-1 w-4 rounded-full bg-blue-400 mx-auto "></span>
-        </div>
-        <div className="aspect-square h-[44px] rounded hover:bg-neutral-50/10 flex flex-col justify-between py-1 items-center">
-          <File />
-          <span className="flex h-1 w-2 rounded-full bg-neutral-500 mx-auto "></span>
-        </div>
-        <div className="aspect-square h-[44px] rounded hover:bg-neutral-50/10 flex flex-col justify-between py-1 items-center">
-          <File />
-          <span className="flex h-1 w-2 rounded-full bg-neutral-500 mx-auto "></span>
-        </div>
-      </div>
-      <div className="min-w-16 ">ff</div>
-    </div>
-  );
-}
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import WindowsSheet from "./WindowsSheet";
+import { Label } from "./ui/label";
+import { Input } from "./ui/input";
 
-export default Taskbar
+const Taskbar = () => {
+  const winBtnRef = useRef(null);
+  const [windowBtnSelected, setWindowBtnSelected] = useState(false);
+
+  const handleWindowSheetClose = (e) => {
+    if (winBtnRef.current && !winBtnRef.current.contains(e.target)) {
+      gsap.to("#WINDOW_SHEET", {
+        duration: 0.3,
+        y: "800",
+        opacity: 0,
+        onComplete:()=>setWindowBtnSelected(false)
+      });
+      setWindowBtnSelected(false);
+    } else if (
+      winBtnRef.current &&
+      winBtnRef.current.contains(e.target) &&
+      windowBtnSelected
+    ) {
+      gsap.to("#WINDOW_SHEET", {
+        duration: 0.3,
+        y: "800",
+        opacity: 0,
+        onComplete:()=>setWindowBtnSelected(false)
+      });
+      setWindowBtnSelected(false);
+    } else {
+      gsap.to("#WINDOW_SHEET", {
+        duration: 0.3,
+        y: "0",
+        opacity: 1,
+       
+      });
+      setWindowBtnSelected(true);
+    }
+  };
+
+  return (
+    <>
+      <div className="taskbar">
+        <div className="min-w-16"></div>
+        <div className="min-w-16 flex gap-1 items-center">
+          <div
+            ref={winBtnRef}
+            id="WINDOW_BTN"
+            className={`aspect-square h-[44px] rounded flex justify-center items-center ${
+              windowBtnSelected ? "bg-neutral-100/20" : "hover:bg-neutral-50/10"
+            } `}
+          >
+            <PiWindowsLogoFill
+              id="WINDOW_BTN_ICON"
+              className="w-8 h-8 text-blue-400"
+            />
+          </div>
+
+          <div className="taskbar_search ">
+            <Search className="w-5 h-5 mr-2" />
+            <input
+              type="text"
+              name="search"
+              id="TASKBAR_SEARCH"
+              placeholder="Search"
+            />
+          </div>
+          <div className="taskbar_icon">
+            <File />
+            <span className=""></span>
+          </div>
+          <div className="taskbar_icon">
+            <File />
+            <span className=""></span>
+          </div>
+          <div className="taskbar_icon">
+            <File />
+            <span className=""></span>
+          </div>
+        </div>
+        <div className="min-w-16 ">ff</div>
+      </div>
+      <WindowsSheet onClose={handleWindowSheetClose} />
+    </>
+  );
+};
+
+export default Taskbar;

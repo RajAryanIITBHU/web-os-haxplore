@@ -2,10 +2,11 @@
 
 import useResizeObserver from "@/hooks/useResizeObserver";
 import { DraftingCompass } from "lucide-react";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Draggable from "react-draggable";
 import DraggableIcon from "./DraggableIcon";
 import PopupWindow from "./PopupWindow";
+import gsap from "gsap";
 
   const gridSize = 70;
 
@@ -58,6 +59,7 @@ const Desktop = () => {
     );
     setIcons(updatedIcons);
   }
+
 
   return (
     <div className="flex-1 w-full h-[calc(100dvh - 3rem)]" ref={ref}>

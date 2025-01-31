@@ -10,7 +10,16 @@ import {
 
 const PopupWindow = ({children}) => {
   return (
-    <></>
+    <Dialog>
+      <DialogTrigger></DialogTrigger>
+      <DialogContent>
+        <DialogTitle ></DialogTitle>
+        <p>This is a Window dialog!</p>
+      </DialogContent>
+      <DialogFooter>
+        <DialogClose>Close</DialogClose>
+      </DialogFooter>
+    </Dialog>
   );
 };
 
