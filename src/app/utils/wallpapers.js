@@ -1,0 +1,1 @@
+export const wallpapers = ["/wallpapers/w1.jpg", "/wallpapers/w2.jpg"];
