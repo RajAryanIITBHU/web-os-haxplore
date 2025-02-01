@@ -12,62 +12,24 @@ import {
 import WindowsSheet from "./WindowsSheet";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
+import CustomSheet from "./ui/customSheet";
+import TaskbarRight from "./TaskbarRight";
+import useResizeObserver from "@/hooks/useResizeObserver";
 
 const Taskbar = () => {
-  const winBtnRef = useRef(null);
-  const [windowBtnSelected, setWindowBtnSelected] = useState(false);
 
-  const handleWindowSheetClose = (e) => {
-    if (winBtnRef.current && !winBtnRef.current.contains(e.target)) {
-      gsap.to("#WINDOW_SHEET", {
-        duration: 0.3,
-        y: "800",
-        opacity: 0,
-        onComplete:()=>setWindowBtnSelected(false)
-      });
-      setWindowBtnSelected(false);
-    } else if (
-      winBtnRef.current &&
-      winBtnRef.current.contains(e.target) &&
-      windowBtnSelected
-    ) {
-      gsap.to("#WINDOW_SHEET", {
-        duration: 0.3,
-        y: "800",
-        opacity: 0,
-        onComplete:()=>setWindowBtnSelected(false)
-      });
-      setWindowBtnSelected(false);
-    } else {
-      gsap.to("#WINDOW_SHEET", {
-        duration: 0.3,
-        y: "0",
-        opacity: 1,
-       
-      });
-      setWindowBtnSelected(true);
-    }
-  };
+  const [ref, size] = useResizeObserver();
+  
 
   return (
     <>
       <div className="taskbar">
         <div className="min-w-16"></div>
-        <div className="min-w-16 flex gap-1 items-center">
-          <div
-            ref={winBtnRef}
-            id="WINDOW_BTN"
-            className={`aspect-square h-[44px] rounded flex justify-center items-center ${
-              windowBtnSelected ? "bg-neutral-100/20" : "hover:bg-neutral-50/10"
-            } `}
-          >
-            <PiWindowsLogoFill
-              id="WINDOW_BTN_ICON"
-              className="w-8 h-8 text-blue-400"
-            />
-          </div>
+        <div className="min-w-16 flex gap-1 items-center" ref={ref}>
+          
+          <CustomSheet btn={<PiWindowsLogoFill className="w-8 h-8 text-blue-400" />} align="center"  className="aspect-square h-[44px] rounded flex justify-center items-center" children={<WindowsSheet/>}/>
 
-          <div className="taskbar_search ">
+          <CustomSheet btn={<div className="taskbar_search max-md:hidden">
             <Search className="w-5 h-5 mr-2" />
             <input
               type="text"
@@ -75,7 +37,7 @@ const Taskbar = () => {
               id="TASKBAR_SEARCH"
               placeholder="Search"
             />
-          </div>
+          </div>} align="center"  className="!bg-transparent" children={<div className="w-64 h-64 bg-neutral-100/60"></div>} />
           <div className="taskbar_icon">
             <File />
             <span className=""></span>
@@ -89,9 +51,9 @@ const Taskbar = () => {
             <span className=""></span>
           </div>
         </div>
-        <div className="min-w-16 ">ff</div>
+        <TaskbarRight/>
       </div>
-      <WindowsSheet onClose={handleWindowSheetClose} />
+      {/* <WindowsSheet onClose={handleWindowSheetClose} /> */}
     </>
   );
 };

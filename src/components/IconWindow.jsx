@@ -2,6 +2,7 @@
 import Draggable from 'react-draggable';
 import React, { useCallback, useRef, useState } from 'react'
 import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
 
 const IconWindow = ({id,size, closeWindow,children}) => {
     const [full , setFull] = useState(false)
@@ -15,15 +16,17 @@ const IconWindow = ({id,size, closeWindow,children}) => {
         setPosition({ x: data.x, y: data.y });
     },[])
 
+
   return (
     <Draggable
       nodeRef={nodeRef}
-      onDrag={handleDrag}
-      position={full ? { x: 0, y: 0 } : position}
+      onDrag={()=>{}}
+      position={full ? { x: 0, y: 0 } : null}
       onStop={() => {}}
       defaultPosition={{ x: 40, y: 50 }}
       bounds={{ top: 0, left: 0, right: size.width - 100, bottom: size.height - 100 }}
       disabled={full}
+      handle='.dragHandle'
     >
       <div
         ref={nodeRef}
@@ -36,7 +39,7 @@ const IconWindow = ({id,size, closeWindow,children}) => {
           
         }}
       >
-        <div className="w-full h-8 bg-neutral-100 flex justify-end px-1 py-1">
+        <div className="w-full h-8 bg-neutral-100 flex justify-end px-1 py-1 dragHandle">
           <div className="w-4 h-4 transition hover:bg-red-700 bg-red-500 rounded-full m-1"></div>
           <div
             className="w-4 h-4 transition hover:bg-yellow-700 bg-yellow-500 rounded-full m-1"

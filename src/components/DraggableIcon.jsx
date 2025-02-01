@@ -1,9 +1,10 @@
 "use client"
 import { DraftingCompass } from 'lucide-react';
-import React, { useRef, useState } from 'react'
+import React, { use, useEffect, useRef, useState } from 'react'
 import { gsap } from "gsap";
 import Draggable from "react-draggable";
 import IconWindow from './IconWindow';
+import { useGSAP } from '@gsap/react';
 
 const DraggableIcon = ({
   id,
@@ -71,7 +72,7 @@ const DraggableIcon = ({
         </div>
       </Draggable>
       {winOpen && (
-        
+          
           <IconWindow id={id} size={size} closeWindow={()=>{setWinOpen(false)}} children={children}/>
         
       )}
